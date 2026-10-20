@@ -1,12 +1,13 @@
 use axum::{
     extract::State,
-    http::StatusCode,
+    http::{header, StatusCode},
     response::Json,
     routing::get,
     Router,
 };
 use std::sync::Arc;
 use tokio::sync::RwLock;
+use tower_http::cors::{Any, CorsLayer};
 
 use hwmond::{collect, SensorData};
 
@@ -22,9 +23,16 @@ async fn main() {
     // Pre-warm sensors once so the first API call is instant.
     let data = Arc::new(RwLock::new(collect()));
 
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods(Any)
+        .allow_headers(Any);
+
     let app = Router::new()
+        .route("/", get(index))
         .route("/api", get(get_sensors))
         .route("/health", get(health))
+        .layer(cors)
         .with_state(AppState { data });
 
     let addr = "0.0.0.0:9899";
@@ -64,4 +72,24 @@ async fn get_sensors(State(state): State<AppState>) -> Json<SensorData> {
 
 async fn health() -> (StatusCode, &'static str) {
     (StatusCode::OK, "ok")
+}
+
+/// Serve the dashboard HTML.
+async fn index() -> (
+    [(header::HeaderName, header::HeaderValue); 2],
+    &'static str,
+) {
+    (
+        [
+            (
+                header::CONTENT_TYPE,
+                header::HeaderValue::from_static("text/html; charset=utf-8"),
+            ),
+            (
+                header::CACHE_CONTROL,
+                header::HeaderValue::from_static("no-cache"),
+            ),
+        ],
+        include_str!("../../index.html"),
+    )
 }
