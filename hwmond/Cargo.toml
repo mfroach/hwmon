@@ -1,0 +1,17 @@
+[package]
+name = "hwmond"
+version = "0.1.0"
+edition = "2021"
+description = "Hardware monitoring daemon — reads sensors and exposes JSON API for the widget"
+
+[[bin]]
+name = "hwmond"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+axum = { version = "0.7", features = ["json"] }
+chrono = { version = "0.4", features = ["serde"] }
+nvml-wrapper = { git = "https://github.com/rust-nvml/nvml-wrapper.git", rev = "eb47417eede43443f139053479618e96ad32893d" }
