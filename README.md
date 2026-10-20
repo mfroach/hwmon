@@ -1,5 +1,7 @@
 # hwmond — Hardware Monitoring Daemon & Widget
 
+*This was generated in two manual prompts with Qwen3.6-35B-A3B-UD-Q4_K_XL in OpenCode, expect bugs and ugly source. It only targets nvidia and CPU for now. Working on my machine running Linux 7.2.9. It's possible large parts of the code were ripped from LACT as I provided the source as a reference.*
+
 A lightweight Linux hardware monitoring widget inspired by [LACT](https://github.com/ilyapr/LACT).
 
 ## Architecture
