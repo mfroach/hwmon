@@ -1,0 +1,16 @@
+[package]
+name = "hwmon-gui"
+version = "0.1.0"
+edition = "2021"
+description = "Hardware monitor GUI widget — egui/eframe frontend"
+
+[[bin]]
+name = "hwmon-gui"
+path = "src/main.rs"
+
+[dependencies]
+eframe = { version = "0.28", features = ["default"] }
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
